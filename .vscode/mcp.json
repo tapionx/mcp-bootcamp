@@ -4,7 +4,7 @@
             "type": "stdio",
             "command": "python",
             "args": [
-                "~/tapion/src/mcp-bootcamp/mcp_server.py"
+                "mcp_server.py"
             ]
         }
     }
