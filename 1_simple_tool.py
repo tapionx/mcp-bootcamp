@@ -1,5 +1,5 @@
 """
-a simple script to interacto with OpenAI API
+a simple script to interact with OpenAI API
 and providing a basic arithmetic tool the AI can use
 """
 
