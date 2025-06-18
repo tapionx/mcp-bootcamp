@@ -1,0 +1,11 @@
+{
+    "servers": {
+        "my-mcp-server-4c29be3f": {
+            "type": "stdio",
+            "command": "python",
+            "args": [
+                "~/tapion/src/mcp-bootcamp/mcp_server.py"
+            ]
+        }
+    }
+}
