@@ -1,6 +1,6 @@
 {
     "servers": {
-        "my-mcp-server-4c29be3f": {
+        "my-first-mcp-server": {
             "type": "stdio",
             "command": "python",
             "args": [
