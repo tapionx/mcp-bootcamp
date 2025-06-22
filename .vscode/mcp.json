@@ -1,11 +1,15 @@
 {
     "servers": {
-        "my-first-mcp-server": {
+        "stdlib": {
             "type": "stdio",
-            "command": "python",
+            "command": "uv",
             "args": [
-                "mcp_server.py"
-            ]
+                "run",
+                "mcp_server_1_stdlib.py"
+            ],
+            "dev": {
+                "watch": "*.py"
+            }
         }
     }
 }

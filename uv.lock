@@ -158,7 +158,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "openai", specifier = ">=1.88.0" },
-    { name = "pip-system-certs", specifier = ">=5.1" },
+    { name = "pip-system-certs", specifier = ">=5.2" },
 ]
 
 [[package]]
@@ -191,14 +191,14 @@ wheels = [
 
 [[package]]
 name = "pip-system-certs"
-version = "5.1"
+version = "5.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pip" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/00/16/b3fb26aef80a19a233e890db92771ee5ad44c608b12fb370c2257fd0f15a/pip_system_certs-5.1.tar.gz", hash = "sha256:c7bee124ef8aa0294168459c404b93756f7a380707333929bf4165eb8ef1bbac", size = 5456, upload-time = "2025-06-17T13:14:17.083Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3d/0c/a338ae5d49192861cf54da4d5c2af0efe47edbaa0827995b284005366ca5/pip_system_certs-5.2.tar.gz", hash = "sha256:80b776b5cf17191bf99d313699b7fce2fdb84eb7bbb225fd134109a82706406f", size = 5408, upload-time = "2025-06-17T23:33:15.322Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e3/7f/383113e82524d894c0e1b2a99c9578d5e9abeb3ad255fd82e57f04f172c2/pip_system_certs-5.1-py3-none-any.whl", hash = "sha256:941fdba32204ae2f2095f26904292017ce631def5fdfa3c7ea07ea5752724138", size = 5925, upload-time = "2025-06-17T13:14:16.033Z" },
+    { url = "https://files.pythonhosted.org/packages/99/ce/608bbe82759363d6e752dd370daf066be3be8e7ffdb79838501ed6104173/pip_system_certs-5.2-py3-none-any.whl", hash = "sha256:e6ef3e106d4d02313e33955c2bcc4c2b143b2da07ef91e28a6805a0c1c512126", size = 5866, upload-time = "2025-06-17T23:33:14.554Z" },
 ]
 
 [[package]]

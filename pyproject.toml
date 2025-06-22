@@ -6,5 +6,5 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "openai>=1.88.0",
-    "pip-system-certs>=5.1",
+    "pip-system-certs>=5.2",
 ]
