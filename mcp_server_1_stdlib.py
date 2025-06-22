@@ -8,6 +8,7 @@ Server features:
 
 Client features:
     ROOTS: check logs for the Client response to the roots/list request
+    SAMPLING: the Server needs an LLM to generate a response (#TODO)
 
 Not yet supported by VSCode:
     ELICITATION: ask Client for parameters
