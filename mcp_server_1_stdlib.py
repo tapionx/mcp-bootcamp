@@ -1,10 +1,13 @@
 """
 Simple MCP server using standard library.
 
-TOOLS: "how many days are left until Christmas?"
-RESOURCES: add "current time" as a resource and ask "is it time to go to sleep?"
-PROMPTS: /mcp.<name>.quote-of-the-day
-ROOTS: ??
+Server features:
+    TOOLS: "how many days are left until Christmas?"
+    RESOURCES: add "current time" as a resource and ask "is it time to go to sleep?"
+    PROMPTS: /mcp.<name>.quote-of-the-day
+
+Client features:
+    ROOTS: check logs for the Client response to the roots/list request
 """
 
 import json
@@ -48,14 +51,18 @@ class MCPServer:
             return self.handle_prompts_list()
         elif method == "prompts/get":
             return self.handle_prompts_get(params)
-        elif method == "roots/list":
-            return self.handle_roots_list()
         else:
             return {"error": f"Unknown method: {method}"}
 
     def handle_notification(self, method: str, params: Dict) -> None:
-        logger.info(f"Received notification: {method} with params: {params}")
-        # Notifications do not require a response
+        # for demo purposes, we send Client a request to list roots
+        roots_request = {
+            "jsonrpc": "2.0",
+            "id": "roots_request_1",
+            "method": "roots/list",
+            "params": {}
+        }        
+        print(json.dumps(roots_request), flush=True)
 
     def handle_initialize(self, params: Dict) -> Dict:
         return {
