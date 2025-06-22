@@ -8,6 +8,9 @@ Server features:
 
 Client features:
     ROOTS: check logs for the Client response to the roots/list request
+
+Not yet supported by VSCode:
+    ELICITATION: ask Client for parameters
 """
 
 import json
@@ -37,6 +40,8 @@ class MCPServer:
             self.handle_notification(method, params)
             return {}  # No response for notifications
 
+        if request.get("id") == "roots_request_1":
+            return {}
         if method == "initialize":
             return self.handle_initialize(params)
         elif method == "resources/list":
