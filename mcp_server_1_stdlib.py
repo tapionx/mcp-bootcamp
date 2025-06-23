@@ -66,8 +66,8 @@ class MCPServer:
             "jsonrpc": "2.0",
             "id": "roots_request_1",
             "method": "roots/list",
-            "params": {}
-        }        
+            "params": {},
+        }
         print(json.dumps(roots_request), flush=True)
 
     def handle_initialize(self, params: Dict) -> Dict:
@@ -108,9 +108,7 @@ class MCPServer:
         else:
             return {"error": f"Unknown resource URI: {uri}"}
 
-        return {
-            "contents": [{"uri": uri, "mimeType": "application/json", "text": content}]
-        }
+        return {"contents": [{"uri": uri, "mimeType": "application/json", "text": content}]}
 
     def handle_tools_list(self) -> Dict:
         return {
@@ -152,9 +150,7 @@ class MCPServer:
                 days = difference.days
                 result = f"There are {days} days between {start_date_str} and {end_date_str}."
             except ValueError as e:
-                result = (
-                    f"Error parsing dates. Please use YYYY-MM-DD format. Error: {e}"
-                )
+                result = f"Error parsing dates. Please use YYYY-MM-DD format. Error: {e}"
 
             return {"content": [{"type": "text", "text": result}]}
         else:
@@ -193,17 +189,13 @@ class MCPServer:
 
             return {
                 "description": "Quote of the day prompt",
-                "messages": [
-                    {"role": "user", "content": {"type": "text", "text": prompt_text}}
-                ],
+                "messages": [{"role": "user", "content": {"type": "text", "text": prompt_text}}],
             }
         else:
             return {"error": f"Unknown prompt: {prompt_name}"}
 
     def handle_roots_list(self) -> Dict:
-        return {
-            "roots": [{"uri": f"file://{os.getcwd()}", "name": "Current Directory"}]
-        }
+        return {"roots": [{"uri": f"file://{os.getcwd()}", "name": "Current Directory"}]}
 
 
 def run_stdio_server():

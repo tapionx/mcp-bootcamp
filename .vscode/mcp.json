@@ -10,6 +10,17 @@
             "dev": {
                 "watch": "*.py"
             }
-        }
+        },
+        // "library": {
+        //     "type": "stdio",
+        //     "command": "uv",
+        //     "args": [
+        //         "run",
+        //         "mcp_server_2_library.py"
+        //     ],
+        //     "dev": {
+        //         "watch": "*.py"
+        //     }
+        // }
     }
 }
