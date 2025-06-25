@@ -5,22 +5,14 @@
             "command": "uv",
             "args": [
                 "run",
-                "mcp_server_1_stdlib.py"
+                "2_mcp_stdlib/mcp_server_stdlib.py"
             ],
             "dev": {
-                "watch": "*.py"
+                "watch": "2_mcp_stdlib/*.py"
             }
         },
-        // "library": {
-        //     "type": "stdio",
-        //     "command": "uv",
-        //     "args": [
-        //         "run",
-        //         "mcp_server_2_library.py"
-        //     ],
-        //     "dev": {
-        //         "watch": "*.py"
-        //     }
-        // }
+        "django-mcp": {
+            "url": "http://localhost:8000/mcp/"
+        },
     }
 }
