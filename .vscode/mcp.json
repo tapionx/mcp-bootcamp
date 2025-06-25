@@ -5,10 +5,10 @@
             "command": "uv",
             "args": [
                 "run",
-                "2_mcp_stdlib/mcp_server_stdlib.py"
+                "src/mcp_server_stdlib.py"
             ],
             "dev": {
-                "watch": "2_mcp_stdlib/*.py"
+                "watch": "src/mcp_server_stdlib/*.py"
             }
         },
         "django-mcp": {

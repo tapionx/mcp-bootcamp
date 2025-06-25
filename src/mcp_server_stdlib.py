@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 class MCPServer:
 
     def handle_request(self, request: Dict) -> Dict:
+        """Handle MCP request and return raw result (no JSON-RPC wrapper)"""
         method = request.get("method")
         params = request.get("params", {})
 
@@ -60,15 +61,38 @@ class MCPServer:
         else:
             return {"error": f"Unknown method: {method}"}
 
+    def handle_request_with_response(self, request: Dict) -> Dict:
+        """Handle MCP request and return full JSON-RPC response"""
+        try:
+            result = self.handle_request(request)
+            if not result:
+                return {}  # Skip empty responses (notifications)
+            
+            response = {"jsonrpc": "2.0", "result": result}
+            if "id" in request:
+                response["id"] = request["id"]
+            return response
+        except Exception as e:
+            error_response = {
+                "jsonrpc": "2.0",
+                "error": {"code": -32603, "message": f"Internal error: {str(e)}"},
+                "id": request.get("id")
+            }
+            return error_response
+
+    def send_notification_to_client(self, method: str, params: Dict) -> None:
+        """Send notification to client via stdio (only for stdio server)"""
+        notification = {
+            "jsonrpc": "2.0",
+            "id": f"{method}_request_1",
+            "method": method,
+            "params": params,
+        }
+        print(json.dumps(notification), flush=True)
+
     def handle_notification(self, method: str, params: Dict) -> None:
         # for demo purposes, we send Client a request to list roots
-        roots_request = {
-            "jsonrpc": "2.0",
-            "id": "roots_request_1",
-            "method": "roots/list",
-            "params": {},
-        }
-        print(json.dumps(roots_request), flush=True)
+        self.send_notification_to_client("roots/list", {})
 
     def handle_initialize(self, params: Dict) -> Dict:
         return {
@@ -197,6 +221,16 @@ class MCPServer:
     def handle_roots_list(self) -> Dict:
         return {"roots": [{"uri": f"file://{os.getcwd()}", "name": "Current Directory"}]}
 
+    def handle_raw_request(self, raw_data: str) -> Dict:
+        """Handle raw JSON string request and return full JSON-RPC response with all error handling"""
+        try:
+            request = json.loads(raw_data)
+            return self.handle_request_with_response(request)
+        except json.JSONDecodeError:
+            return {"jsonrpc": "2.0", "error": {"code": -32700, "message": "Parse error"}, "id": None}
+        except Exception as e:
+            return {"jsonrpc": "2.0", "error": {"code": -32603, "message": f"Internal error: {str(e)}"}, "id": None}
+
 
 def run_stdio_server():
     server = MCPServer()
@@ -207,28 +241,9 @@ def run_stdio_server():
             if not line:
                 break
 
-            try:
-                request = json.loads(line.strip())
-                # VSCode already logs requests and responses
-                # logger.debug(f"REQUEST <<< {request}")
-                result = server.handle_request(request)
-                if not result:
-                    continue  # Skip empty responses (notifications)
-                response = {"jsonrpc": "2.0", "result": result}
-                if "id" in request:
-                    response["id"] = request["id"]
-
+            response = server.handle_raw_request(line.strip())
+            if response:  # Only print non-empty responses
                 print(json.dumps(response), flush=True)
-                # logger.debug(f"RESPONSE >>> {response}")
-
-            except json.JSONDecodeError as e:
-                error_response = {
-                    "jsonrpc": "2.0",
-                    "error": {"code": -32700, "message": "Parse error"},
-                    "id": None,
-                }
-                print(json.dumps(error_response), flush=True)
-                logger.error(f"Invalid JSON received: {e}")
 
     except KeyboardInterrupt:
         logger.info("Server shutdown requested")

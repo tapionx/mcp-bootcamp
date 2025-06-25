@@ -1,17 +1,5 @@
 """
 Simple MCP server using Anthropic's MCP library.
-
-Server features:
-    TOOLS: "how many days are left until Christmas?"
-    RESOURCES: add "current time" as a resource and ask "is it time to go to sleep?"
-    PROMPTS: /mcp.<name>.quote-of-the-day
-
-Client features:
-    ROOTS: check logs for the Client response to the roots/list request
-    SAMPLING: the Server needs an LLM to generate a response (#TODO)
-
-Not yet supported by VSCode:
-    ELICITATION: ask Client for parameters
 """
 
 import asyncio
