@@ -37,12 +37,12 @@ class MCPServer:
         method = request.get("method")
         params = request.get("params", {})
 
-        # Handle notifications (no response required)
+        # no ID -> it's a "notification"
         if request.get("id") is None:
-            self.handle_notification(method, params)
-            return {}  # No response for notifications
+            return self.ask_roots(method, params)
 
-        if request.get("id") == "roots_request_1":
+        if request.get("id") == "42":
+            # we are cheating here, MCP should be stateful
             return {}
         if method == "initialize":
             return self.handle_initialize(params)
@@ -67,7 +67,9 @@ class MCPServer:
             result = self.handle_request(request)
             if not result:
                 return {}  # Skip empty responses (notifications)
-            
+
+            if "id" in result:
+                return result
             response = {"jsonrpc": "2.0", "result": result}
             if "id" in request:
                 response["id"] = request["id"]
@@ -76,23 +78,20 @@ class MCPServer:
             error_response = {
                 "jsonrpc": "2.0",
                 "error": {"code": -32603, "message": f"Internal error: {str(e)}"},
-                "id": request.get("id")
+                "id": request.get("id"),
             }
             return error_response
 
     def send_notification_to_client(self, method: str, params: Dict) -> None:
         """Send notification to client via stdio (only for stdio server)"""
-        notification = {
-            "jsonrpc": "2.0",
-            "id": f"{method}_request_1",
-            "method": method,
-            "params": params,
-        }
-        print(json.dumps(notification), flush=True)
 
-    def handle_notification(self, method: str, params: Dict) -> None:
-        # for demo purposes, we send Client a request to list roots
-        self.send_notification_to_client("roots/list", {})
+    def ask_roots(self, method: str, params: Dict) -> None:
+        return {
+            "jsonrpc": "2.0",
+            "id": "42",
+            "method": "roots/list",
+            "params": {},
+        }
 
     def handle_initialize(self, params: Dict) -> Dict:
         return {
@@ -227,9 +226,17 @@ class MCPServer:
             request = json.loads(raw_data)
             return self.handle_request_with_response(request)
         except json.JSONDecodeError:
-            return {"jsonrpc": "2.0", "error": {"code": -32700, "message": "Parse error"}, "id": None}
+            return {
+                "jsonrpc": "2.0",
+                "error": {"code": -32700, "message": "Parse error"},
+                "id": None,
+            }
         except Exception as e:
-            return {"jsonrpc": "2.0", "error": {"code": -32603, "message": f"Internal error: {str(e)}"}, "id": None}
+            return {
+                "jsonrpc": "2.0",
+                "error": {"code": -32603, "message": f"Internal error: {str(e)}"},
+                "id": None,
+            }
 
 
 def run_stdio_server():
